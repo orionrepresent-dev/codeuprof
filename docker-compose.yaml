@@ -1,4 +1,4 @@
-name: codigodoeuprofundo
+version: '3.8'
 
 services:
   backend:
@@ -8,10 +8,11 @@ services:
     restart: always
     volumes:
       - ./backend/checkpoints:/app/backend/checkpoints
-      depends_on:
+    depends_on:
       redis:
         condition: service_healthy
-  # ... resto do código
+    # O Coolify gerencia as portas automaticamente se você não definir 'ports' aqui
+    # Se precisar de variáveis de ambiente, adicione-as no painel do Coolify, não aqui.
 
   redis:
     image: redis:alpine
