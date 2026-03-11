@@ -5,10 +5,7 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    container_name: codigodoeuprofundo_backend
     restart: always
-    ports:
-      - "8001:8000"
     volumes:
       - ./backend/checkpoints:/app/backend/checkpoints
     env_file:
@@ -16,23 +13,12 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-    networks:
-      - app_network
 
   redis:
     image: redis:alpine
-    container_name: codigodoeuprofundo_redis
     restart: always
-    ports:
-      - "6379:6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 3
-    networks:
-      - app_network
-
-networks:
-  app_network:
-    driver: bridge
