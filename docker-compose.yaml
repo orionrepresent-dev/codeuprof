@@ -8,9 +8,7 @@ services:
     restart: always
     volumes:
       - ./backend/checkpoints:/app/backend/checkpoints
-    env_file:
-      - ./backend/.env
-    depends_on:
+      depends_on:
       redis:
         condition: service_healthy
   # ... resto do código
