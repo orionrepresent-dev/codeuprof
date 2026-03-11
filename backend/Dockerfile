@@ -30,5 +30,6 @@ ENV PYTHONPATH=/app
 # Expõe a porta que a aplicação vai rodar
 EXPOSE 8000
 
-# Comando para rodar a aplicação usando Gunicorn com Uvicorn workers
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-c", "gunicorn_conf.py", "main:app"]
+
+# Comando simplificado para garantir que o host 0.0.0.0 e a porta 8000 sejam respeitados
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "main:app"]
