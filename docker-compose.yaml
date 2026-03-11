@@ -3,7 +3,7 @@ name: codigodoeuprofundo
 services:
   backend:
     build:
-      context: ./backend.
+      context: .
       dockerfile: backend/Dockerfile
     restart: always
     volumes:
@@ -13,6 +13,7 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+  # ... resto do código
 
   redis:
     image: redis:alpine
