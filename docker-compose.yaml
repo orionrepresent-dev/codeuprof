@@ -8,6 +8,10 @@ services:
     restart: always
     expose:
       - 8000
+    # ADICIONE ESTE BLOCO DE LABELS ABAIXO:
+    labels:
+      - "coolify.managed=true"
+      - "coolify.port=8000"
     volumes:
       - ./backend/checkpoints:/app/backend/checkpoints
     depends_on:
