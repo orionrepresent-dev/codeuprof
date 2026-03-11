@@ -1,28 +1,27 @@
 version: '3.8'
 
+networks:
+  coolify:
+    external: true
+
 services:
   backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
     restart: always
+    networks:
+      - coolify
     expose:
       - 8000
-    # ADICIONE ESTE BLOCO DE LABELS ABAIXO:
     labels:
       - "coolify.managed=true"
       - "coolify.port=8000"
-    volumes:
-      - ./backend/checkpoints:/app/backend/checkpoints
-    depends_on:
-      redis:
-        condition: service_healthy
+    # ... resto das configurações (volumes, depends_on)
 
   redis:
     image: redis/redis-stack-server:latest
     restart: always
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    networks:
+      - coolify
+    # ... resto das configurações (healthcheck)
