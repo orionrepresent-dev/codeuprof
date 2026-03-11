@@ -3,7 +3,7 @@ name: codigodoeuprofundo
 services:
   backend:
     build:
-      context: .
+      context: ./backend.
       dockerfile: backend/Dockerfile
     restart: always
     volumes:
