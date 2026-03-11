@@ -1,26 +1,21 @@
 version: '3.8'
 
 services:
-backend:
+  backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
     restart: always
-    # ADICIONE ESTAS LINHAS:
     expose:
       - 8000
-    # Certifique-se de que o Uvicorn no seu Dockerfile/main.py 
-    # também esteja escutando na porta 8000
     volumes:
       - ./backend/checkpoints:/app/backend/checkpoints
     depends_on:
       redis:
         condition: service_healthy
-    # O Coolify gerencia as portas automaticamente se você não definir 'ports' aqui
-    # Se precisar de variáveis de ambiente, adicione-as no painel do Coolify, não aqui.
 
   redis:
-    image: redis:alpine
+    image: redis/redis-stack-server:latest
     restart: always
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
