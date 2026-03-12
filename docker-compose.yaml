@@ -5,7 +5,15 @@ networks:
     external: true
 
 services:
-  backend:
+  backend:labels:
+      - "coolify.managed=true"
+      - "coolify.port=8000"
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`cod.orionconsultoria.cloud`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
     build:
       context: .
       dockerfile: backend/Dockerfile
