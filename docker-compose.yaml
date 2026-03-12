@@ -5,15 +5,7 @@ networks:
     external: true
 
 services:
-  backend:labels:
-      - "coolify.managed=true"
-      - "coolify.port=8000"
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`cod.orionconsultoria.cloud`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls=true"
-      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+  backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -25,11 +17,23 @@ services:
     labels:
       - "coolify.managed=true"
       - "coolify.port=8000"
-    # ... resto das configurações (volumes, depends_on)
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`cod.orionconsultoria.cloud`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+    volumes:
+      - ./backend/checkpoints:/app/backend/checkpoints
+    depends_on:
+      redis:
+        condition: service_healthy
 
   redis:
     image: redis/redis-stack-server:latest
     restart: always
     networks:
       - coolify
-    # ... resto das configurações (healthcheck)
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
